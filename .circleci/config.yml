@@ -3,8 +3,8 @@ executors:
   ruby:
     parameters:
       version:
-        description: "Ruby version number"
-        default: "3.1.1"
+        description: 'Ruby version number'
+        default: '3.1.1'
         type: string
     docker:
       - image: cimg/ruby:<< parameters.version >>
@@ -14,8 +14,8 @@ commands:
     description: Install Ruby dependencies with Bundler
     parameters:
       version:
-        description: "Ruby version number"
-        default: "3.1.1"
+        description: 'Ruby version number'
+        default: '3.1.1'
         type: string
     steps:
       - restore_cache:
@@ -43,8 +43,8 @@ jobs:
   test:
     parameters:
       version:
-        description: "Ruby version number"
-        default: "3.1.1"
+        description: 'Ruby version number'
+        default: '3.1.1'
         type: string
     executor:
       name: ruby
@@ -65,17 +65,17 @@ workflows:
       - test:
           matrix:
             parameters:
-              version: ["2.6.9", "2.7.5", "3.0.3", "3.1.1"]
+              version: ['2.6.9', '2.7.5', '3.0.3', '3.1.1']
   cron-workflow:
     jobs:
       - rubocop
       - test:
           matrix:
             parameters:
-              version: ["2.6.9", "2.7.5", "3.0.3", "3.1.1"]
+              version: ['2.6.9', '2.7.5', '3.0.3', '3.1.1']
     triggers:
       - schedule:
-          cron: "0 13 * * 6"
+          cron: '0 13 * * 6'
           filters:
             branches:
               only:

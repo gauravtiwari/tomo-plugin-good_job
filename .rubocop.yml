@@ -10,8 +10,8 @@ AllCops:
   NewCops: enable
   TargetRubyVersion: 2.6
   Exclude:
-    - "tmp/**/*"
-    - "vendor/**/*"
+    - 'tmp/**/*'
+    - 'vendor/**/*'
 
 Layout/HashAlignment:
   EnforcedColonStyle:
@@ -27,21 +27,21 @@ Layout/SpaceAroundEqualsInParameterDefault:
 Metrics/AbcSize:
   Max: 20
   Exclude:
-    - "test/**/*"
+    - 'test/**/*'
 
 Metrics/BlockLength:
   Exclude:
-    - "*.gemspec"
-    - "Rakefile"
+    - '*.gemspec'
+    - 'Rakefile'
 
 Metrics/ClassLength:
   Exclude:
-    - "test/**/*"
+    - 'test/**/*'
 
 Metrics/MethodLength:
   Max: 12
   Exclude:
-    - "test/**/*"
+    - 'test/**/*'
 
 Metrics/ParameterLists:
   Max: 6

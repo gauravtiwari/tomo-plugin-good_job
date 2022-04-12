@@ -3,6 +3,6 @@ module Tomo
   end
 end
 
-module Tomo::Plugin::Sidekiq
+module Tomo::Plugin::GoodJob
   VERSION = "1.1.2".freeze
 end

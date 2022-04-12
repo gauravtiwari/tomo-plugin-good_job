@@ -1,11 +1,11 @@
 [Unit]
-Description=Sidekiq for <%= settings[:application] %>
+Description=GoodJob for <%= settings[:application] %>
 After=syslog.target network.target
 ConditionPathExists=<%= paths.current %>
 
 [Service]
 ExecReload=/usr/bin/kill -TSTP $MAINPID
-ExecStart=/bin/bash -lc 'exec bundle exec sidekiq'
+ExecStart=/bin/bash -lc 'exec bundle exec good_job start'
 Restart=on-failure
 RestartSec=1
 StandardError=syslog

@@ -1,17 +1,16 @@
-# tomo-plugin-sidekiq
+# tomo-plugin-good_job
 
-[![Gem Version](https://badge.fury.io/rb/tomo-plugin-sidekiq.svg)](https://rubygems.org/gems/tomo-plugin-sidekiq)
-[![Circle](https://circleci.com/gh/mattbrictson/tomo-plugin-sidekiq/tree/main.svg?style=shield)](https://app.circleci.com/pipelines/github/mattbrictson/tomo-plugin-sidekiq?branch=main)
-[![Code Climate](https://codeclimate.com/github/mattbrictson/tomo-plugin-sidekiq/badges/gpa.svg)](https://codeclimate.com/github/mattbrictson/tomo-plugin-sidekiq)
+[![Gem Version](https://badge.fury.io/rb/tomo-plugin-good_job.svg)](https://rubygems.org/gems/tomo-plugin-good_job)
+[![Circle](https://circleci.com/gh/gauravtiwari/tomo-plugin-good_job/tree/main.svg?style=shield)](https://app.circleci.com/pipelines/github/gauravtiwari/tomo-plugin-good_job?branch=main)
+[![Code Climate](https://codeclimate.com/github/gauravtiwari/tomo-plugin-good_job/badges/gpa.svg)](https://codeclimate.com/github/gauravtiwari/tomo-plugin-good_job)
 
-This is a [tomo](https://github.com/mattbrictson/tomo) plugin that provides tasks for managing [sidekiq](https://github.com/mperham/sidekiq) via [systemd](https://en.wikipedia.org/wiki/Systemd), based on the recommendations in the sidekiq documentation. This plugin assumes that you are also using the tomo `rbenv` and `env` plugins, and that you are using a systemd-based Linux distribution like Ubuntu 18 LTS.
+This is a [tomo](https://github.com/mattbrictson/tomo) plugin that provides tasks for managing [good_job](https://github.com/bensheldon/good_job) via [systemd](https://en.wikipedia.org/wiki/Systemd), based on the recommendations in the good_job documentation. This plugin assumes that you are also using the tomo `rbenv` and `env` plugins, and that you are using a systemd-based Linux distribution like Ubuntu 18 LTS.
 
 ---
 
 - [Installation](#installation)
 - [Settings](#settings)
 - [Tasks](#tasks)
-- [Recommendations](#recommendations)
 - [Support](#support)
 - [License](#license)
 - [Code of conduct](#code-of-conduct)
@@ -22,35 +21,35 @@ This is a [tomo](https://github.com/mattbrictson/tomo) plugin that provides task
 Run:
 
 ```
-$ gem install tomo-plugin-sidekiq
+$ gem install tomo-plugin-good_job
 ```
 
 Or add it to your Gemfile:
 
 ```ruby
-gem "tomo-plugin-sidekiq"
+gem "tomo-plugin-good_job"
 ```
 
 Then add the following to `.tomo/config.rb`:
 
 ```ruby
-plugin "sidekiq"
+plugin "good_job"
 
 setup do
   # ...
-  run "sidekiq:setup_systemd"
+  run "good_job:setup_systemd"
 end
 
 deploy do
   # ...
   # Place this task at *after* core:symlink_current
-  run "sidekiq:restart"
+  run "good_job:restart"
 end
 ```
 
 ### enable-linger
 
-This plugin installs sidekiq as a user-level service using systemctl --user. This allows sidekiq to be installed, started, stopped, and restarted without a root user or sudo. However, when provisioning the host you must make sure to run the following command as root to allow the sidekiq process to continue running even after the tomo deploy user disconnects:
+This plugin installs good_job as a user-level service using systemctl --user. This allows good_job to be installed, started, stopped, and restarted without a root user or sudo. However, when provisioning the host you must make sure to run the following command as root to allow the good_job process to continue running even after the tomo deploy user disconnects:
 
 ```
 # run as root
@@ -59,93 +58,74 @@ $ loginctl enable-linger <DEPLOY_USER>
 
 ## Settings
 
-| Name                  | Purpose |
-| --------------------- | ------- |
-| `sidekiq_systemd_service` | Name of the systemd unit that will be used to manage sidekiq <br>**Default:** `"sidekiq_%{application}.service"`   |
-| `sidekiq_systemd_service_path` | Location where the systemd unit will be installed <br>**Default:** `".config/systemd/user/%{sidekiq_systemd_service}"`   |
-| `sidekiq_systemd_service_template_path` | Local path to the ERB template that will be used to create the systemd unit <br>**Default:** [service.erb](https://github.com/mattbrictson/tomo-plugin-sidekiq/blob/main/lib/tomo/plugin/sidekiq/service.erb)   |
+| Name                                     | Purpose                                                                                                                                                                                                         |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `good_job_systemd_service`               | Name of the systemd unit that will be used to manage good*job <br>**Default:** `"good_job*%{application}.service"`                                                                                              |
+| `good_job_systemd_service_path`          | Location where the systemd unit will be installed <br>**Default:** `".config/systemd/user/%{good_job_systemd_service}"`                                                                                         |
+| `good_job_systemd_service_template_path` | Local path to the ERB template that will be used to create the systemd unit <br>**Default:** [service.erb](https://github.com/gauravtiwari/tomo-plugin-good_job/blob/main/lib/tomo/plugin/good_job/service.erb) |
 
 ## Tasks
 
-### sidekiq:setup_systemd
+### good_job:setup_systemd
 
-Configures systemd to manage sidekiq. This means that sidekiq will automatically be restarted if it crashes, or if the host is rebooted. This task essentially does two things:
+Configures systemd to manage good_job. This means that good_job will automatically be restarted if it crashes, or if the host is rebooted. This task essentially does two things:
 
-1. Installs a `sidekiq.service` systemd unit
+1. Installs a `good_job.service` systemd unit
 1. Enables it using `systemctl --user enable`
 
-Note that these units will be installed and run for the deploy user. You can use `:sidekiq_systemd_service_template_path` to provide your own template and customize how sidekiq and systemd are configured.
+Note that these units will be installed and run for the deploy user. You can use `:good_job_systemd_service_template_path` to provide your own template and customize how good_job and systemd are configured.
 
-`sidekiq:setup_systemd` is intended for use as a [setup](https://tomo-deploy.com/commands/setup/) task. It must be run before sidekiq can be started during a deploy.
+`good_job:setup_systemd` is intended for use as a [setup](https://tomo-deploy.com/commands/setup/) task. It must be run before good_job can be started during a deploy.
 
-### sidekiq:restart
+### good_job:restart
 
-Gracefully restarts the sidekiq service via systemd, or starts it if it isn't running already. Equivalent to:
-
-```
-systemctl --user restart sidekiq.service
-```
-
-### sidekiq:start
-
-Starts the sidekiq service via systemd, if it isn't running already. Equivalent to:
+Gracefully restarts the good_job service via systemd, or starts it if it isn't running already. Equivalent to:
 
 ```
-systemctl --user start sidekiq.service
+systemctl --user restart good_job.service
 ```
 
-### sidekiq:stop
+### good_job:start
 
-Stops the sidekiq service via systemd. Equivalent to:
-
-```
-systemctl --user stop sidekiq.service
-```
-
-### sidekiq:status
-
-Prints the status of the sidekiq systemd service. Equivalent to:
+Starts the good_job service via systemd, if it isn't running already. Equivalent to:
 
 ```
-systemctl --user status sidekiq.service
+systemctl --user start good_job.service
 ```
 
-### sidekiq:log
+### good_job:stop
 
-Uses `journalctl` (part of systemd) to view the log output of the sidekiq service. This task is intended for use as a [run](https://tomo-deploy.com/commands/run/) task and accepts command-line arguments. The arguments are passed through to the `journalctl` command. For example:
+Stops the good_job service via systemd. Equivalent to:
 
 ```
-$ tomo run -- sidekiq:log -f
+systemctl --user stop good_job.service
+```
+
+### good_job:status
+
+Prints the status of the good_job systemd service. Equivalent to:
+
+```
+systemctl --user status good_job.service
+```
+
+### good_job:log
+
+Uses `journalctl` (part of systemd) to view the log output of the good_job service. This task is intended for use as a [run](https://tomo-deploy.com/commands/run/) task and accepts command-line arguments. The arguments are passed through to the `journalctl` command. For example:
+
+```
+$ tomo run -- good_job:log -f
 ```
 
 Will run this remote script:
 
 ```
-journalctl -q --user-unit=sidekiq.service -f
+journalctl -q --user-unit=good_job.service -f
 ```
-
-## Recommendations
-
-### Sidekiq configuration
-
-Add a `config/sidekiq.yml` file to your application (i.e. checked into git) and use that to configure sidekiq, using environment variables as necessary. For example:
-
-```yaml
----
-:queues:
-  - default
-  - mailers
-  - active_storage_analysis
-  - active_storage_purge
-
-:concurrency: <%= ENV.fetch("SIDEKIQ_CONCURRENCY", "1") %>
-```
-
-Now you can tune sidekiq for each environment by simply setting environment variables (e.g. using `tomo run env:set`), without hard-coding configuration in git or within systemd files.
 
 ## Support
 
-If you want to report a bug, or have ideas, feedback or questions about the gem, [let me know via GitHub issues](https://github.com/mattbrictson/tomo-plugin-sidekiq/issues/new) and I will do my best to provide a helpful answer. Happy hacking!
+If you want to report a bug, or have ideas, feedback or questions about the gem, [let me know via GitHub issues](https://github.com/gauravtiwari/tomo-plugin-good_job/issues/new) and I will do my best to provide a helpful answer. Happy hacking!
 
 ## License
 
@@ -157,4 +137,4 @@ Everyone interacting in this project’s codebases, issue trackers, chat rooms a
 
 ## Contribution guide
 
-Pull requests are welcome!
+Pull requests are welcome! Thanks @mattbrictson for Tomo 🙏
