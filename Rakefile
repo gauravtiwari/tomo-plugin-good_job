@@ -16,7 +16,7 @@ task default: %i[test rubocop]
 
 Rake::Task["release"].enhance do
   puts "Don't forget to publish the release on GitHub!"
-  system "open https://github.com/mattbrictson/tomo-plugin-good_job/releases"
+  system "open https://github.com/gauravtiwari/tomo-plugin-good_job/releases"
 end
 
 task :disable_overcommit do
