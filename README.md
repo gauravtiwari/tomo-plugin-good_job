@@ -60,7 +60,7 @@ $ loginctl enable-linger <DEPLOY_USER>
 
 | Name                                     | Purpose                                                                                                                                                                                                         |
 | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `good_job_systemd_service`               | Name of the systemd unit that will be used to manage good*job <br>**Default:** `"good_job*%{application}.service"`                                                                                              |
+| `good_job_systemd_service`               | Name of the systemd unit that will be used to manage good*job <br>**Default:** `"good_job_%{application}.service"`                                                                                              |
 | `good_job_systemd_service_path`          | Location where the systemd unit will be installed <br>**Default:** `".config/systemd/user/%{good_job_systemd_service}"`                                                                                         |
 | `good_job_systemd_service_template_path` | Local path to the ERB template that will be used to create the systemd unit <br>**Default:** [service.erb](https://github.com/gauravtiwari/tomo-plugin-good_job/blob/main/lib/tomo/plugin/good_job/service.erb) |
 
